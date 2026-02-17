@@ -385,7 +385,7 @@ def _patch_django_asgi_handler() -> None:
 def _unwrap_django_ninja_view(fn: "Callable[..., Any]", request: "WSGIRequest") -> "Callable[..., Any]":
     """
     Unwrap django-ninja PathView to get the actual endpoint function.
-    
+
     Django-ninja wraps endpoint functions in PathView.get_view() which returns
     a sync_view_wrapper or async_view_wrapper. These wrappers have a closure
     that contains the PathView instance, which has the list of operations.
