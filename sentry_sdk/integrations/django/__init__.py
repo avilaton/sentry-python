@@ -402,19 +402,16 @@ def _unwrap_django_ninja_view(fn: "Callable[..., Any]", request: "WSGIRequest") 
         ):
             # Extract PathView from the closure
             for cell in fn.__closure__:
-                try:
-                    path_view = cell.cell_contents
-                    # Check if this is actually a PathView instance
-                    if (
-                        type(path_view).__name__ == "PathView"
-                        and hasattr(path_view, "operations")
-                    ):
-                        # Find the operation matching the request method
-                        for operation in path_view.operations:
-                            if request.method in operation.methods:
-                                return operation.view_func
-                except (AttributeError, ValueError):
-                    continue
+                path_view = cell.cell_contents
+                # Check if this is actually a PathView instance
+                if (
+                    type(path_view).__name__ == "PathView"
+                    and hasattr(path_view, "operations")
+                ):
+                    # Find the operation matching the request method
+                    for operation in path_view.operations:
+                        if request.method in operation.methods:
+                            return operation.view_func
     except Exception:
         pass
     return fn
